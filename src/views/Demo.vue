@@ -3,7 +3,7 @@
     <!-- 페이지 헤더 -->
     <PageHeader
         title="컴포넌트 데모"
-        :show-back="true"
+        :showBack="true"
     >
       <template #actions>
         <button class="p-2 text-gray-700 hover:text-gray-900">
@@ -80,6 +80,15 @@
         <h2 class="text-xl font-bold mb-4 text-gray-900">VerificationInput</h2>
         <VerificationInput
             type="guardian"
+            code="5821"
+            @complete="handleVerification"
+        />
+      </section>
+
+      <section>
+        <h2 class="text-xl font-bold mb-4 text-gray-900">VerificationInput</h2>
+        <VerificationInput
+            type="parent"
             @complete="handleVerification"
         />
       </section>

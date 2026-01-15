@@ -4,7 +4,7 @@
       :disabled="disabled"
       :class="[
       fullWidth ? 'w-full' : '',
-      'py-4 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed',
+      'py-4 rounded-xl font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-sm',
       variants[variant]
     ]"
   >
