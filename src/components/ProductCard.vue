@@ -1,20 +1,22 @@
 <template>
   <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
     <div class="flex justify-between items-start mb-4">
-      <h3 class="text-lg font-bold text-gray-900">{{ name }}</h3>
-      <StatusBadge :status="status">{{ config.label }}</StatusBadge>
+      <h3 class="text-lg font-bold text-gray-900">{{ parentName }}</h3>
+      <StatusBadge :status="status">{{ statusLabel }}</StatusBadge>
     </div>
 
-    <div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
+    <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
       <div class="flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2">
           <circle cx="12" cy="12" r="10"/>
           <polyline points="12 6 12 12 16 14"/>
         </svg>
         <span>{{ time }}</span>
       </div>
       <div class="flex items-center gap-1">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2">
           <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
           <circle cx="12" cy="10" r="3"/>
         </svg>
@@ -22,32 +24,36 @@
       </div>
     </div>
 
-    <!-- 상품명 박스 (아이콘 + 텍스트) -->
-    <div class="bg-gray-50 rounded-xl px-4 py-3 mb-3 flex items-center gap-2">
-      <!-- 의약품 아이콘 -->
-      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-gray-600 flex-shrink-0">
-        <path d="M10.5 20.5 10 21a2 2 0 0 1-2.828 0L4.343 18.172a2 2 0 0 1 0-2.828l.5-.5"/>
-        <path d="m14 14-.5.5a2 2 0 0 0 0 2.828l2.828 2.828a2 2 0 0 0 2.828 0l.5-.5"/>
-        <path d="M14 7.343 8.343 13l-1.414 1.414m8.485-8.485 1.414 1.414L14 10"/>
-        <path d="M17.657 6.343 8.343 15.657"/>
-        <path d="M9.5 4.5 10 4a2 2 0 0 1 2.828 0l2.829 2.828a2 2 0 0 1 0 2.829l-.5.5"/>
-      </svg>
-      <span class="text-gray-900 font-medium">{{ location }}</span>
+    <!-- 상품명 + 카테고리 -->
+    <div class="bg-gray-50 rounded-xl px-4 py-2.5 mb-5 flex justify-between items-center">
+      <span class="text-gray-900 font-medium">{{ productName }}</span>
+      <span class="text-gray-700 text-sm bg-white border border-gray-300 rounded-lg px-3 h-8 flex items-center">
+        {{ category }}
+      </span>
     </div>
 
+    <!-- 상품 구매하러 가기 버튼 -->
     <button
-        v-if="isPurchased"
-        @click="handleViewDetails"
-        class="w-full bg-gray-400 text-white py-3 rounded-xl font-medium"
+        @click="handleShop"
+        class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors mb-5"
     >
-      자녀가 구매를 완료했어요
+      상품 구매하러 가기
+    </button>
+
+    <!-- 구매완료 알려주기 버튼 -->
+    <button
+        v-if="!isCompleted"
+        @click="handleComplete"
+        class="w-full bg-white border-2 border-gray-300 text-gray-700 py-3 rounded-xl font-medium hover:bg-gray-50 transition-colors"
+    >
+      구매완료 알려주기
     </button>
     <button
         v-else
-        @click="handlePurchase"
-        class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors"
+        disabled
+        class="w-full bg-gray-200 text-gray-500 py-3 rounded-xl font-medium cursor-not-allowed"
     >
-      요청 취소하기
+      구매 완료됨
     </button>
   </div>
 </template>
@@ -57,7 +63,7 @@ import { computed } from 'vue'
 import StatusBadge from './StatusBadge.vue'
 
 const props = defineProps({
-  name: {
+  parentName: {
     type: String,
     default: '부모님'
   },
@@ -71,33 +77,33 @@ const props = defineProps({
   },
   status: {
     type: String,
-    default: 'pending'
+    default: 'pending' // 'pending', 'urgent'
   },
-  location: {
+  productName: {
     type: String,
-    default: '오메가3'
+    required: true
   },
-  isPurchased: {
+  category: {
+    type: String,
+    default: '의약품'
+  },
+  isCompleted: {
     type: Boolean,
     default: false
   }
 })
 
-const emit = defineEmits(['purchase', 'viewDetails'])
+const emit = defineEmits(['shop', 'complete'])
 
-const statusConfig = {
-  pending: { label: '알림', color: 'bg-gray-200' },
-  approved: { label: '허용', color: 'bg-green-500' },
-  urgent: { label: '시급', color: 'bg-orange-500' }
+const statusLabel = computed(() => {
+  return props.status === 'urgent' ? '시급' : '알림'
+})
+
+const handleShop = () => {
+  emit('shop')
 }
 
-const config = computed(() => statusConfig[props.status] || statusConfig.pending)
-
-const handlePurchase = () => {
-  emit('purchase')
-}
-
-const handleViewDetails = () => {
-  emit('viewDetails')
+const handleComplete = () => {
+  emit('complete')
 }
 </script>

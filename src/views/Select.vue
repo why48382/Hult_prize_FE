@@ -1,3 +1,22 @@
+<script setup>
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import SafetyOption from '@/components/SafetyOption.vue'
+import BaseButton from '@/components/BaseButton.vue'
+
+const router = useRouter()
+const selectedRole = ref(null)
+
+const handleNext = () => {
+  if (selectedRole.value === 'guardian') {
+    router.push('/pairing/guardian')
+  }
+  if (selectedRole.value === 'parent') {
+    router.push('/pairing/parent')
+  }
+}
+</script>
+
 <template>
   <div class="min-h-screen bg-white flex flex-col items-center justify-center px-4 sm:px-6">
     <!-- 이미지 영역 -->
@@ -53,22 +72,3 @@
     </div>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import SafetyOption from '@/components/SafetyOption.vue'
-import BaseButton from '@/components/BaseButton.vue'
-
-const router = useRouter()
-const selectedRole = ref(null)
-
-const handleNext = () => {
-  if (selectedRole.value === 'guardian') {
-    router.push('/guardian')
-  }
-  if (selectedRole.value === 'parent') {
-    router.push('/parent')
-  }
-}
-</script>

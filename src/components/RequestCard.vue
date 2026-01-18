@@ -25,7 +25,7 @@
     </div>
 
     <!-- 상품명 + 카테고리 -->
-    <div class="bg-gray-50 rounded-xl px-4 py-2 mb-3 flex justify-between items-center">
+    <div class="bg-gray-50 rounded-xl px-4 py-2 mb-5 flex justify-between items-center">
       <span class="text-gray-900 font-medium">{{ location }}</span>
       <span class="text-gray-700 text-sm bg-white border border-gray-300 rounded-2xl px-3 py-2 flex items-center">{{ category }}</span>
     </div>

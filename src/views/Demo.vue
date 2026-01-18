@@ -1,3 +1,58 @@
+
+<script setup>
+import {ref} from 'vue'
+import PageHeader from '@/components/common/PageHeader.vue'
+import BottomNav from '@/components/common/BottomNav.vue'
+import RequestCard from '@/components/RequestCard.vue'
+import SafetyOption from '@/components/SafetyOption.vue'
+import VerificationInput from '@/components/VerificationInput.vue'
+import VoiceButton from '@/components/VoiceButton.vue'
+import ProductCard from '@/components/ProductCard.vue'
+import QuestionOption from '@/components/QuestionOption.vue'
+import BaseButton from '@/components/BaseButton.vue'
+import StatusBadge from '@/components/StatusBadge.vue'
+
+// State
+const selectedSafety = ref('guardian')
+const isListening = ref(false)
+const recognizedText = ref('')
+const selectedQuestion = ref(null)
+
+// Event Handlers
+const handlePurchase = () => {
+  console.log('구매 취소')
+}
+
+const handleViewDetails = () => {
+  console.log('상세 보기')
+}
+
+const handleVerification = () => {
+  console.log('인증 완료')
+}
+
+const toggleListening = () => {
+  isListening.value = !isListening.value
+  if (isListening.value) {
+    recognizedText.value = '마이크 버튼을 눌러 원하시는 품목을 알려주세요!'
+  } else {
+    recognizedText.value = ''
+  }
+}
+
+const handleShop = () => {
+  console.log('상품 구매하러 가기')
+}
+
+const handleComplete = () => {
+  console.log('구매완료 알림')
+}
+
+const handleClick = () => {
+  console.log('버튼 클릭')
+}
+</script>
+
 <template>
   <div class="min-h-screen bg-gray-50 pb-20">
     <!-- 페이지 헤더 -->
@@ -7,7 +62,8 @@
     >
       <template #actions>
         <button class="p-2 text-gray-700 hover:text-gray-900">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="1"/>
             <circle cx="12" cy="5" r="1"/>
             <circle cx="12" cy="19" r="1"/>
@@ -21,13 +77,14 @@
 
       <!-- RequestCard Section -->
       <section>
-        <h2 class="text-xl font-bold mb-4 text-gray-900">RequestCard</h2>
+        <h2 class="text-xl font-bold mb-4 text-gray-900">RequestCard (보호자용)</h2>
         <RequestCard
             name="부모님"
             time="10분 전"
             distance="45초"
             status="urgent"
             location="오메가3"
+            category="의약품"
             @purchase="handlePurchase"
         />
         <RequestCard
@@ -36,8 +93,36 @@
             distance="45초"
             status="approved"
             location="비타민 D"
+            category="건강식품"
             :is-purchased="true"
             @view-details="handleViewDetails"
+        />
+      </section>
+
+      <!-- ProductCard Section (자녀용 요청 카드) -->
+      <section>
+        <h2 class="text-xl font-bold mb-4 text-gray-900">ProductCard (자녀용 요청 카드)</h2>
+        <ProductCard
+            parent-name="부모님"
+            time="10분 전"
+            distance="45초"
+            status="urgent"
+            product-name="오메가3"
+            category="의약품"
+            :is-completed="false"
+            @shop="handleShop"
+            @complete="handleComplete"
+        />
+        <ProductCard
+            parent-name="부모님"
+            time="30분 전"
+            distance="45초"
+            status="pending"
+            product-name="비타민 D"
+            category="건강식품"
+            :is-completed="true"
+            @shop="handleShop"
+            @complete="handleComplete"
         />
       </section>
 
@@ -52,7 +137,8 @@
               @click="selectedSafety = 'guardian'"
           >
             <template #icon>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" class="text-white">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
             </template>
@@ -64,7 +150,8 @@
               @click="selectedSafety = 'parent'"
           >
             <template #icon>
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-white">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" class="text-white">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
                 <circle cx="9" cy="7" r="4"/>
                 <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
@@ -77,7 +164,7 @@
 
       <!-- VerificationInput Section -->
       <section>
-        <h2 class="text-xl font-bold mb-4 text-gray-900">VerificationInput</h2>
+        <h2 class="text-xl font-bold mb-4 text-gray-900">VerificationInput (보호자)</h2>
         <VerificationInput
             type="guardian"
             code="5821"
@@ -86,7 +173,7 @@
       </section>
 
       <section>
-        <h2 class="text-xl font-bold mb-4 text-gray-900">VerificationInput</h2>
+        <h2 class="text-xl font-bold mb-4 text-gray-900">VerificationInput (부모님)</h2>
         <VerificationInput
             type="parent"
             @complete="handleVerification"
@@ -101,29 +188,6 @@
             :recognized-text="recognizedText"
             @click="toggleListening"
         />
-      </section>
-
-      <!-- ProductCard Section -->
-      <section>
-        <h2 class="text-xl font-bold mb-4 text-gray-900">ProductCard</h2>
-        <ProductCard
-            name="가는 들불 프리미엄 오메가 3"
-            :rating="4.5"
-            :reviews="5569"
-            :price="24000"
-            :discount="38"
-            @click="handleProductClick"
-        />
-        <div class="mt-3">
-          <ProductCard
-              name="트루탄 빠건강 콘드로이친"
-              :rating="4.5"
-              :reviews="5569"
-              :price="27900"
-              :discount="38"
-              @click="handleProductClick"
-          />
-        </div>
       </section>
 
       <!-- QuestionOption Section -->
@@ -176,56 +240,6 @@
     </div>
 
     <!-- 하단 네비게이션 -->
-    <BottomNav />
+    <BottomNav/>
   </div>
 </template>
-
-<script setup>
-import { ref } from 'vue'
-import PageHeader from '@/components/common/PageHeader.vue'
-import BottomNav from '@/components/common/BottomNav.vue'
-import RequestCard from '@/components/RequestCard.vue'
-import SafetyOption from '@/components/SafetyOption.vue'
-import VerificationInput from '@/components/VerificationInput.vue'
-import VoiceButton from '@/components/VoiceButton.vue'
-import ProductCard from '@/components/ProductCard.vue'
-import QuestionOption from '@/components/QuestionOption.vue'
-import BaseButton from '@/components/BaseButton.vue'
-import StatusBadge from '@/components/StatusBadge.vue'
-
-// State
-const selectedSafety = ref('guardian')
-const isListening = ref(false)
-const recognizedText = ref('')
-const selectedQuestion = ref(null)
-
-// Event Handlers
-const handlePurchase = () => {
-  console.log('구매 취소')
-}
-
-const handleViewDetails = () => {
-  console.log('상세 보기')
-}
-
-const handleVerification = () => {
-  console.log('인증 완료')
-}
-
-const toggleListening = () => {
-  isListening.value = !isListening.value
-  if (isListening.value) {
-    recognizedText.value = '마이크 버튼을 눌러 원하시는 품목을 알려주세요!'
-  } else {
-    recognizedText.value = ''
-  }
-}
-
-const handleProductClick = () => {
-  console.log('상품 클릭')
-}
-
-const handleClick = () => {
-  console.log('버튼 클릭')
-}
-</script>
