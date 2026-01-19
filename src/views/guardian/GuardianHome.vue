@@ -1,17 +1,9 @@
 <template>
   <div class="min-h-screen bg-gray-50 pb-20">
     <!-- 페이지 헤더 -->
-    <PageHeader title="쇼핑 요청함">
-      <template #actions>
-        <button class="p-2 text-gray-700 hover:text-gray-900">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-               stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="1"/>
-            <circle cx="12" cy="5" r="1"/>
-            <circle cx="12" cy="19" r="1"/>
-          </svg>
-        </button>
-      </template>
+    <PageHeader title="쇼핑 요청함"
+                :show-back="false"
+                type="voice">
     </PageHeader>
 
     <!-- 페이지 내용 -->

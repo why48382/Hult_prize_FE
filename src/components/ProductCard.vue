@@ -96,7 +96,7 @@ const props = defineProps({
 const emit = defineEmits(['shop', 'complete'])
 
 const statusLabel = computed(() => {
-  return props.status === 'urgent' ? '시급' : '알림'
+  return props.status === 'urgent' ? '시급' : '여유'
 })
 
 const handleShop = () => {
