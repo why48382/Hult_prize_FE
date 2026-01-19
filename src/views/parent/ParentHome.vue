@@ -54,7 +54,7 @@ const handleReset = () => {
 const handleNext = () => {
   if (recognizedText.value) {
     console.log('다음 단계:', recognizedText.value)
-    router.push('/parent/complete')
+    router.push('/parent/loading')
   }
 }
 </script>
