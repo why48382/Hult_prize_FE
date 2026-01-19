@@ -8,16 +8,7 @@
           </svg>
         </button>
 
-        <svg v-else-if="type==='voice'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-blue-500">
-          <path d="M12 1v22"/>
-          <path d="M8 5v14"/>
-          <path d="M16 5v14"/>
-        </svg>
-
-        <svg v-else-if="type==='history'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-blue-500">
-          <path d="M6 2h12l3 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9l3-7z"/>
-          <path d="M3 9h18"/>
-        </svg>
+        <component v-else-if="iconComponent" :is="iconComponent" class="w-5 h-5 text-blue-500"/>
       </div>
 
       <h1 class="text-lg font-bold text-gray-900">{{ title }}</h1>
@@ -27,8 +18,11 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
+import {computed} from "vue";
+import VoiceIcon from "@/components/icon/VoiceIcon.vue";
+import BoxIcon from "@/components/icon/BoxIcon.vue";
 
-defineProps({
+const props=defineProps({
   title:{type:String,required:true},
   type:{type:String,default:null}, // 'voice' | 'history'
   showBack:{type:Boolean,default:false}
@@ -36,4 +30,11 @@ defineProps({
 
 const router=useRouter()
 const handleBack=()=>{router.back()}
+
+const iconComponent=computed(()=>{
+  if(props.showBack) return null
+  if(props.type==='voice') return VoiceIcon
+  if(props.type==='box') return BoxIcon
+  return null
+})
 </script>
