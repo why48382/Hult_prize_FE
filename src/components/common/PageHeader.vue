@@ -26,11 +26,12 @@ import { useRouter } from 'vue-router'
 import { computed } from "vue"
 import VoiceIcon from "@/components/icon/VoiceIcon.vue"
 import BoxIcon from "@/components/icon/BoxIcon.vue"
+import SettingIcon from "@/components/icon/SettingIcon.vue";
 
 const props = defineProps({
   title: { type: String, required: true },
   description: { type: String, default: '' },
-  type: { type: String, default: null }, // 'voice' | 'box'
+  type: { type: String, default: null }, // 'voice' | 'box' | 'setting'
   showBack: { type: Boolean, default: false }
 })
 
@@ -41,6 +42,7 @@ const iconComponent = computed(() => {
   if (props.showBack) return null
   if (props.type === 'voice') return VoiceIcon
   if (props.type === 'box') return BoxIcon
+  if (props.type === 'setting') return SettingIcon
   return null
 })
 </script>
