@@ -13,28 +13,34 @@
 
       <h1 class="text-lg font-bold text-gray-900">{{ title }}</h1>
     </div>
+
+    <!-- 설명 텍스트 (있을 경우) -->
+    <div v-if="description" class="max-w-md mx-auto px-4 pb-3">
+      <p class="text-gray-600 text-sm">{{ description }}</p>
+    </div>
   </header>
 </template>
 
 <script setup>
 import { useRouter } from 'vue-router'
-import {computed} from "vue";
-import VoiceIcon from "@/components/icon/VoiceIcon.vue";
-import BoxIcon from "@/components/icon/BoxIcon.vue";
+import { computed } from "vue"
+import VoiceIcon from "@/components/icon/VoiceIcon.vue"
+import BoxIcon from "@/components/icon/BoxIcon.vue"
 
-const props=defineProps({
-  title:{type:String,required:true},
-  type:{type:String,default:null}, // 'voice' | 'history'
-  showBack:{type:Boolean,default:false}
+const props = defineProps({
+  title: { type: String, required: true },
+  description: { type: String, default: '' },
+  type: { type: String, default: null }, // 'voice' | 'box'
+  showBack: { type: Boolean, default: false }
 })
 
-const router=useRouter()
-const handleBack=()=>{router.back()}
+const router = useRouter()
+const handleBack = () => { router.back() }
 
-const iconComponent=computed(()=>{
-  if(props.showBack) return null
-  if(props.type==='voice') return VoiceIcon
-  if(props.type==='box') return BoxIcon
+const iconComponent = computed(() => {
+  if (props.showBack) return null
+  if (props.type === 'voice') return VoiceIcon
+  if (props.type === 'box') return BoxIcon
   return null
 })
 </script>
