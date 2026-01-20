@@ -30,20 +30,24 @@
       <span class="text-gray-700 text-sm bg-white border border-gray-300 rounded-2xl px-3 py-2 flex items-center">{{ category }}</span>
     </div>
 
-    <button
-        v-if="isPurchased"
-        @click="handleViewDetails"
-        class="w-full bg-gray-400 text-white py-3 rounded-xl font-medium"
-    >
-      자녀가 구매를 완료했어요
-    </button>
-    <button
-        v-else
-        @click="handlePurchase"
-        class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors"
-    >
-      요청 취소하기
-    </button>
+    <!-- 버튼 영역 - viewMode에 따라 다르게 표시 -->
+    <div v-if="viewMode === 'parent'">
+      <button
+          v-if="isPurchased"
+          disabled
+          class="w-full bg-gray-400 text-white py-3 rounded-xl font-medium cursor-not-allowed"
+      >
+        자녀가 구매를 완료했어요
+      </button>
+      <button
+          v-else
+          @click="handlePurchase"
+          class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors"
+      >
+        요청 취소하기
+      </button>
+    </div>
+    <!-- guardian 모드는 버튼 없음 -->
   </div>
 </template>
 
@@ -79,6 +83,10 @@ const props = defineProps({
   isPurchased: {
     type: Boolean,
     default: false
+  },
+  viewMode: {
+    type: String,
+    default: 'parent' // 'parent' | 'guardian'
   }
 })
 
