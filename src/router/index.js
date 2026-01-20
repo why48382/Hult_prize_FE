@@ -8,6 +8,7 @@ import ParentHome from "@/views/parent/ParentHome.vue";
 import RequestComplete from "@/views/parent/RequestComplete.vue";
 import { useAuthStore } from '@/stores/auth'
 import RequestLoading from "@/views/parent/RequestLoading.vue";
+import RequestItems from "@/views/RequestItems.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,6 +65,10 @@ const router = createRouter({
         {
             path: '/home/parent',
             component: ParentHome
+        },
+        {
+            path: '/requests',
+            component: RequestItems
         },
     ],
 })
