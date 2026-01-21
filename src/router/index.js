@@ -12,6 +12,8 @@ import RequestItems from "@/views/RequestItems.vue";
 import Settings from "@/views/Settings.vue";
 import OrderComplete from "@/views/guardian/OrderComplete.vue";
 import Question from "@/views/guardian/Question.vue";
+import QuestionLoading from "@/views/guardian/QuestionLoading.vue";
+import PriceCompare from "@/views/guardian/PriceCompare.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -84,6 +86,14 @@ const router = createRouter({
         {
             path: '/shop/questions',
             component: Question
+        },
+        {
+            path: '/shop/loading',
+            component: QuestionLoading
+        },
+        {
+            path: '/shop/price-compare',
+            component: PriceCompare
         },
     ],
 })

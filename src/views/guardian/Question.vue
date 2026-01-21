@@ -120,7 +120,7 @@ const selectOption = (value) => {
   } else {
     // 마지막 단계 → 가격 비교 페이지 이동
     router.push({
-      path: '/price-compare',
+      path: '/shop/loading',
       query: { ...answers.value }
     })
   }
