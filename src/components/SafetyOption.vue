@@ -4,12 +4,12 @@
       :class="[
       'w-full p-5 rounded-2xl border-2 transition-all text-left',
       selected
-        ? 'border-blue-500 bg-blue-50'
+        ? 'border-orange-500 bg-orange-50'
         : 'border-gray-200 bg-white hover:border-gray-300'
     ]"
   >
     <div class="flex items-start gap-4">
-      <div :class="['p-3 rounded-xl', selected ? 'bg-blue-500' : 'bg-gray-100']">
+      <div :class="['p-3 rounded-xl', selected ? 'bg-orange-500' : 'bg-gray-100']">
         <slot name="icon"></slot>
       </div>
       <div class="flex-1">

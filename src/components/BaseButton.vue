@@ -31,7 +31,7 @@ const props = defineProps({
 const emit = defineEmits(['click'])
 
 const variants = {
-  primary: 'bg-blue-500 text-white hover:bg-blue-600',
+  primary: 'bg-orange-500 text-white hover:bg-orange-600',
   secondary: 'bg-gray-200 text-gray-700 hover:bg-gray-300',
   success: 'bg-green-500 text-white hover:bg-green-600',
   danger: 'bg-red-500 text-white hover:bg-red-600'

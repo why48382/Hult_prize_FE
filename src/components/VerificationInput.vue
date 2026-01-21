@@ -14,14 +14,14 @@
         <div
             v-for="(digit, index) in displayCode"
             :key="index"
-            class="w-16 h-20 flex items-center justify-center text-6xl font-bold text-blue-500"
+            class="w-16 h-20 flex items-center justify-center text-6xl font-bold text-orange-500"
         >
           {{ digit }}
         </div>
       </div>
 
       <!-- 부모님 모드: 입력 가능, 0000 표시 후 입력 -->
-      <div v-else class="flex justify-center gap-3 mb-4" style="border-bottom: 3.541px solid #155DFC;">
+      <div v-else class="flex justify-center gap-3 mb-4" style="border-bottom: 3.541px solid #fc7d15;">
         <input
             v-for="(value, index) in values"
             :key="index"
@@ -34,7 +34,7 @@
             :ref="el => inputRefs[index] = el"
             :class="[
             'w-16 h-20 text-center text-6xl font-bold border-none outline-none bg-transparent transition-colors',
-            values[index] ? 'text-blue-500' : 'text-gray-200'
+            values[index] ? 'text-orange-500' : 'text-gray-200'
           ]"
             :placeholder="'0'"
         />

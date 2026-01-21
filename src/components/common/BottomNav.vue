@@ -7,7 +7,7 @@
           @click="navigateTo(item.path)"
           :class="[
           'flex flex-col items-center justify-center flex-1 h-full transition-colors',
-          isActive(item.path) ? 'text-blue-500' : 'text-gray-400'
+          isActive(item.path) ? 'text-orange-500' : 'text-gray-400'
         ]"
       >
         <component

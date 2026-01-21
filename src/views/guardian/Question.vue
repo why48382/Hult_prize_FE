@@ -6,7 +6,7 @@
     <div class="px-4 mt-2">
       <div class="w-full h-2 bg-gray-200 rounded-full">
         <div
-            class="h-2 bg-blue-500 rounded-full transition-all"
+            class="h-2 bg-orange-500 rounded-full transition-all"
             :style="{ width: progress + '%' }"
         />
       </div>

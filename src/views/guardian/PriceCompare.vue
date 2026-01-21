@@ -16,7 +16,7 @@
           :class="[
           'px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors',
           selectedFilter === filter.value
-            ? 'bg-blue-500 text-white'
+            ? 'bg-orange-500 text-white'
             : 'bg-white text-gray-700 border border-gray-200 hover:bg-gray-50'
         ]"
       >
@@ -57,7 +57,7 @@
     <div class="fixed bottom-20 left-0 right-0 px-4 max-w-md mx-auto">
       <button
           @click="sendNotification"
-          class="w-full bg-blue-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-blue-600 transition-colors"
+          class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold text-lg shadow-lg hover:bg-orange-600 transition-colors"
       >
         부모님께 완료 알림 보내기
       </button>

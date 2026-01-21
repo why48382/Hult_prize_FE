@@ -18,6 +18,6 @@ const statusStyles = {
   pending: 'bg-gray-200 text-gray-700',
   approved: 'bg-green-500 text-white',
   urgent: 'bg-orange-500 text-white',
-  completed: 'bg-blue-500 text-white'
+  completed: 'bg-orange-500 text-white'
 }
 </script>

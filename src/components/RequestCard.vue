@@ -42,7 +42,7 @@
       <button
           v-else
           @click="handlePurchase"
-          class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors"
+          class="w-full bg-orange-500 text-white py-3 rounded-xl font-medium hover:bg-orange-600 transition-colors"
       >
         요청 취소하기
       </button>

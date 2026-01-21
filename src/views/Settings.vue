@@ -8,8 +8,8 @@
       <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
-            <div class="w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-500">
+            <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-orange-500">
                 <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>
               </svg>
             </div>
@@ -32,13 +32,13 @@
             v-model="phone"
             @input="formatPhone"
             placeholder="010-1234-5678"
-            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500"
+            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
         />
 
         <button
             v-if="isPhoneValid"
             @click="savePhone"
-            class="mt-3 w-full bg-blue-500 text-white py-3 rounded-xl font-bold hover:bg-blue-600"
+            class="mt-3 w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600"
         >
           저장하기
         </button>
@@ -56,7 +56,7 @@
         </div>
       </div>
 
-      <button @click="handleDisconnect" class="w-full bg-blue-500 text-white py-4 rounded-xl font-bold text-sm hover:bg-blue-600">
+      <button @click="handleDisconnect" class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold text-sm hover:bg-orange-600">
         연동 해제 및 로그아웃
       </button>
     </div>
@@ -110,7 +110,7 @@ onMounted(() => {
 })
 
 /* 버튼 스타일 */
-const activeBtn = 'flex-1 py-3 bg-blue-500 text-white rounded-xl font-medium'
+const activeBtn = 'flex-1 py-3 bg-orange-500 text-white rounded-xl font-medium'
 const normalBtn = 'flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium hover:bg-gray-200'
 
 /* 로그아웃 */

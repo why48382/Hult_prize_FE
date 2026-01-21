@@ -13,7 +13,7 @@
           'rounded-full flex flex-col items-center justify-center absolute transition-all duration-500 ease-out',
           isListening
             ? 'w-72 h-72 bg-gradient-to-br from-orange-400 to-orange-500 shadow-2xl'
-            : 'w-64 h-64 bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg hover:shadow-xl'
+            : 'w-64 h-64 bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg hover:shadow-xl'
         ]"
       >
         <svg
@@ -42,7 +42,7 @@
     <div
         :class="[
         'bg-white rounded-2xl p-6 shadow-sm border transition-all duration-300',
-        isListening ? 'border-blue-500' : 'border-gray-200'
+        isListening ? 'border-orange-500' : 'border-gray-200'
       ]"
     >
       <div class="flex items-center justify-between mb-2">
@@ -74,7 +74,7 @@
         :class="[
         'w-full mt-6 py-4 rounded-xl font-medium transition-colors',
         recognizedText
-          ? 'bg-blue-500 text-white hover:bg-blue-600'
+          ? 'bg-orange-500 text-white hover:bg-orange-600'
           : 'bg-gray-200 text-gray-400 cursor-not-allowed'
       ]"
     >

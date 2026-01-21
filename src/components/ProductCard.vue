@@ -35,7 +35,7 @@
     <!-- 상품 구매하러 가기 버튼 -->
     <button
         @click="handleShop"
-        class="w-full bg-blue-500 text-white py-3 rounded-xl font-medium hover:bg-blue-600 transition-colors mb-5"
+        class="w-full bg-orange-500 text-white py-3 rounded-xl font-medium hover:bg-orange-600 transition-colors mb-5"
     >
       상품 구매하러 가기
     </button>

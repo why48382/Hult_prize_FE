@@ -8,7 +8,7 @@
           </svg>
         </button>
 
-        <component v-else-if="iconComponent" :is="iconComponent" class="w-5 h-5 text-blue-500"/>
+        <component v-else-if="iconComponent" :is="iconComponent" class="w-5 h-5 text-orange-500"/>
       </div>
 
       <h1 class="text-lg font-bold text-gray-900">{{ title }}</h1>
