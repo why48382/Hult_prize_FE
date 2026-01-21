@@ -86,12 +86,13 @@ const requests = ref([
 
 const handleShop = (request) => {
   console.log('상품 구매하러 가기:', request)
-  // router.push(`/shop/${request.id}`)
+  router.push(`/shop/questions`)
 }
 
 const handleComplete = (request) => {
   console.log('구매 완료 알림:', request)
   // 백엔드에 구매 완료 알림
   request.isCompleted = true
+  router.push(`/guardian/complete`)
 }
 </script>

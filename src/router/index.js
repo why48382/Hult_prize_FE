@@ -10,6 +10,8 @@ import { useAuthStore } from '@/stores/auth'
 import RequestLoading from "@/views/parent/RequestLoading.vue";
 import RequestItems from "@/views/RequestItems.vue";
 import Settings from "@/views/Settings.vue";
+import OrderComplete from "@/views/guardian/OrderComplete.vue";
+import Question from "@/views/guardian/Question.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -74,6 +76,14 @@ const router = createRouter({
         {
             path: '/settings',
             component: Settings
+        },
+        {
+            path: '/guardian/complete',
+            component: OrderComplete
+        },
+        {
+            path: '/shop/questions',
+            component: Question
         },
     ],
 })
