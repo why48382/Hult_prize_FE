@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://onsum.store/sitemap.xml

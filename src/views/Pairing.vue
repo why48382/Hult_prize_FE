@@ -48,21 +48,24 @@ onMounted(() => {
 </script>
 
 <template>
-  <PageHeader title="연동" :showBack="true" />
+    <PageHeader title="연동" :showBack="true" />
 
-  <div class="p-4 space-y-8 max-w-md mx-auto">
-    <VerificationInput
-        :type="type"
-        :code="code"
-        @complete="handleVerification"
-    />
-  </div>
+  <form @submit.prevent="handleClick">
+    <div class="p-4 space-y-8 max-w-md mx-auto">
+      <VerificationInput
+          :type="type"
+          :code="code"
+          @complete="handleVerification"
+      />
+    </div>
 
-  <div class="mt-16 p-4 max-w-md mx-auto">
-    <BaseButton variant="primary" @click="handleClick">
-      {{ type === "guardian" ? "다음으로" : "연결하기" }}
-    </BaseButton>
-  </div>
+    <div class="mt-16 p-4 max-w-md mx-auto">
+      <BaseButton variant="primary" type="submit">
+        {{ type === "guardian" ? "다음으로" : "연결하기" }}
+      </BaseButton>
+    </div>
+  </form>
+
 </template>
 
 <style></style>

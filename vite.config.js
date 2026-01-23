@@ -1,8 +1,8 @@
-import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
+import {fileURLToPath, URL} from 'node:url'
+import {defineConfig} from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueDevTools from 'vite-plugin-vue-devtools'
-import { VitePWA } from 'vite-plugin-pwa'  // 👈 추가
+import {VitePWA} from 'vite-plugin-pwa'  // 👈 추가
 
 export default defineConfig({
     plugins: [
@@ -13,22 +13,25 @@ export default defineConfig({
             manifest: {
                 name: '온숨',
                 short_name: '온숨',
+                start_url: '/',
+                scope: '/',
                 description: '부모님 쇼핑 도우미',
                 theme_color: '#3B82F6',
                 background_color: '#ffffff',
                 display: 'standalone',
                 icons: [
                     {
-                        src: '/icon-512.png',
+                        src: '/src/images/main.png',
                         sizes: '512x512',
-                        type: 'image/png'
+                        type: 'image/png',
+                        purpose: 'any maskable'
                     }
                 ]
             },
             workbox: {
                 runtimeCaching: [
                     {
-                        urlPattern: ({ request }) => request.destination === 'script' || request.destination === 'style',
+                        urlPattern: ({request}) => request.destination === 'script' || request.destination === 'style',
                         handler: 'CacheFirst',
                         options: {
                             cacheName: 'static-resources',
@@ -39,7 +42,7 @@ export default defineConfig({
                         }
                     },
                     {
-                        urlPattern: ({ url }) => url.pathname.startsWith('/api'),
+                        urlPattern: ({url}) => url.pathname.startsWith('/api'),
                         handler: 'NetworkFirst',
                         options: {
                             cacheName: 'api-cache',
