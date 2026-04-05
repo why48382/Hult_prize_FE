@@ -1,8 +1,10 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import SafetyOption from '@/components/SafetyOption.vue'
 import BaseButton from '@/components/BaseButton.vue'
+
+import testApi from '@/api/test/index.js'
 
 const router = useRouter()
 const selectedRole = ref(null)
@@ -15,6 +17,17 @@ const handleNext = () => {
     router.push('/pairing/parent')
   }
 }
+
+const backtest = async () => {
+  try {
+    const res = await testApi.springTest();
+  }
+  catch (e) {
+    console.error("스프링 연결 실패", e);
+  }
+}
+
+onMounted(backtest)
 </script>
 
 <template>
@@ -34,27 +47,21 @@ const handleNext = () => {
 
     <!-- 선택 옵션 -->
     <div class="w-full max-w-md space-y-3 sm:space-y-4 mb-6 sm:mb-8 mb-14">
-      <SafetyOption
-          title="보호자입니다"
-          description="부모님 쇼핑을 확인하고 결제해요"
-          :selected="selectedRole === 'guardian'"
-          @click="selectedRole = 'guardian'"
-      >
+      <SafetyOption title="보호자입니다" description="부모님 쇼핑을 확인하고 결제해요" :selected="selectedRole === 'guardian'"
+        @click="selectedRole = 'guardian'">
         <template #icon>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
         </template>
       </SafetyOption>
 
-      <SafetyOption
-          title="부모님입니다"
-          description="자녀에게 필요한 걸 말해요"
-          :selected="selectedRole === 'parent'"
-          @click="selectedRole = 'parent'"
-      >
+      <SafetyOption title="부모님입니다" description="자녀에게 필요한 걸 말해요" :selected="selectedRole === 'parent'"
+        @click="selectedRole = 'parent'">
         <template #icon>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
             <circle cx="9" cy="7" r="4" />
             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
