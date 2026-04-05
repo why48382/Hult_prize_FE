@@ -1,6 +1,6 @@
 {
-  "appId": "com.onsum.app",
-  "appName": "onsum",
+  "appId": "com.onsoom.app",
+  "appName": "onsoom",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "dist",

@@ -15,7 +15,7 @@ CMD ["nginx", "-g", "daemon off;"]
 
 
 # # 2. 도커 이미지 생성
-  #docker build -t onsum-pwa .
+  #docker build -t onsoom-pwa .
   #
   ## 3. 실행
-  #docker run -d -p 80:80 --name onsum onsum-pwa
+  #docker run -d -p 80:80 --name onsoom onsoom-pwa
