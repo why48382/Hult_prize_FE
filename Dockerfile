@@ -1,21 +1,17 @@
 FROM nginx:1.25-alpine
 
-# 기본 nginx 설정 제거
 RUN rm /etc/nginx/conf.d/default.conf
 
-# nginx 설정 복사
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# 빌드 결과물 복사
 COPY dist /usr/share/nginx/html
 
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
 
+# 1. 로컬에서 빌드
+#npm run build
 
-# # 2. 도커 이미지 생성
-  #docker build -t onsoom-pwa .
-  #
-  ## 3. 실행
-  #docker run -d -p 80:80 --name onsoom onsoom-pwa
+# 2. docker build (Dockerfile, nginx.conf, dist/ 가 같은 폴더에 있어야 함)
+#docker build -t why48382/frontend:latest .
