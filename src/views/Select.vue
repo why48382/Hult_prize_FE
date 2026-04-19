@@ -1,8 +1,10 @@
 <script setup>
-import {ref} from 'vue'
-import {useRouter} from 'vue-router'
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 import SafetyOption from '@/components/SafetyOption.vue'
 import BaseButton from '@/components/BaseButton.vue'
+
+import testApi from '@/api/test/index.js'
 
 const router = useRouter()
 const selectedRole = ref(null)
@@ -15,6 +17,17 @@ const handleNext = () => {
     router.push('/pairing/parent')
   }
 }
+
+const backtest = async () => {
+  try {
+    const res = await testApi.springTest();
+  }
+  catch (e) {
+    console.error("스프링 연결 실패", e);
+  }
+}
+
+onMounted(backtest)
 </script>
 
 <template>
@@ -42,12 +55,8 @@ const handleNext = () => {
 
     <!-- 선택 옵션 -->
     <div class="w-full max-w-md space-y-3 sm:space-y-4 mb-6 sm:mb-8 mb-14">
-      <SafetyOption
-          title="보호자입니다"
-          description="부모님 쇼핑을 확인하고 결제해요"
-          :selected="selectedRole === 'guardian'"
-          @click="selectedRole = 'guardian'"
-      >
+      <SafetyOption title="보호자입니다" description="부모님 쇼핑을 확인하고 결제해요" :selected="selectedRole === 'guardian'"
+        @click="selectedRole = 'guardian'">
         <template #icon>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
