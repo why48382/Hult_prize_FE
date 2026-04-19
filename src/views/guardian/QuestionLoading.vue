@@ -26,6 +26,7 @@ onMounted(async () => {
       })
       // 추천 결과를 store에 저장
       auth._recommendResult = res
+      auth.setRecommendResult(res)
     } catch (e) {
       console.error('추천 상품 조회 실패', e)
     }

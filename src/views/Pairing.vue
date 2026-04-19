@@ -4,10 +4,9 @@ import VerificationInput from "@/components/VerificationInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
 import {useAuthStore} from "@/stores/auth";
 import pairingApi from "@/api/pairing/index.js";
-import memberApi from "@/api/member/index.js";
 
-import {ref, computed, onMounted} from "vue";
-import {useRouter, useRoute} from "vue-router";
+import {computed, onMounted, ref} from "vue";
+import {useRoute, useRouter} from "vue-router";
 
 const auth = useAuthStore();
 const router = useRouter();
@@ -61,18 +60,8 @@ const handleClick = async () => {
 onMounted(async () => {
   if (type.value === "guardian") {
     auth.setRole("guardian");
-    try {
-      await memberApi.setRole("CAREGIVER");
-    } catch (e) {
-      console.error("역할 설정 실패", e);
-    }
   } else {
     auth.setRole("parent");
-    try {
-      await memberApi.setRole("ELDER");
-    } catch (e) {
-      console.error("역할 설정 실패", e);
-    }
     await fetchCode();
   }
 });
@@ -97,7 +86,11 @@ onMounted(async () => {
 
       <!-- 보호자: 코드 입력 -->
       <div v-else>
-        <VerificationInput :type="type" :code="null" @complete="handleVerification"/>
+        <VerificationInput
+            :type="type === 'guardian' ? 'parent' : 'guardian'"
+            :code="null"
+            @complete="handleVerification"
+        />
         <p v-if="errorMsg" class="text-red-500 text-sm mt-2 text-center">{{ errorMsg }}</p>
       </div>
 

@@ -83,6 +83,7 @@ const description = computed(() =>
 
 // 보호자 모드용 표시 코드
 const displayCode = computed(() => {
+  if (!props.code) return []
   return props.code.split('').slice(0, props.length)
 })
 

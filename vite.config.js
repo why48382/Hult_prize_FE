@@ -62,14 +62,12 @@ export default defineConfig({
             '@': fileURLToPath(new URL('./src', import.meta.url))
         },
     },
-    
+
     server: {
         proxy: {
-            '/api': {
-                target: 'http://localhost:8080',
-                changeOrigin: true,
-                secure: false,
-            }
+            '/api': { target: 'http://localhost:8080', changeOrigin: true },
+            '/oauth2/authorization': { target: 'http://localhost:8080', changeOrigin: true },
+            '/login/oauth2': { target: 'http://localhost:8080', changeOrigin: true },
         }
     }
 

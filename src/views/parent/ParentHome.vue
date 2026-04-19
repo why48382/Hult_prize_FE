@@ -72,9 +72,18 @@ const startRecording = async () => {
 }
 
 const stopRecording = () => {
-  if (mediaRecorder && mediaRecorder.state !== 'inactive') {
-    mediaRecorder.stop()
-  }
+  return new Promise((resolve) => {
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+      mediaRecorder.onstop = () => {
+        audioBlob.value = new Blob(audioChunks, { type: 'audio/webm' })
+        mediaRecorder.stream?.getTracks().forEach(t => t.stop())
+        resolve()
+      }
+      mediaRecorder.stop()
+    } else {
+      resolve()
+    }
+  })
 }
 
 const toggleListening = async () => {
@@ -85,9 +94,8 @@ const toggleListening = async () => {
     audioBlob.value = null
     await startRecording()
   } else {
+    await stopRecording()  // onstop 완료까지 기다림
     isListening.value = false
-    stopRecording()
-    // 녹음 완료 후 임시 텍스트 표시 (STT는 서버에서 처리)
     recognizedText.value = '(녹음 완료 - 자녀에게 전달됩니다)'
   }
 }

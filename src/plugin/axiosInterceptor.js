@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { useAuthStore } from '@/stores/auth'
+import {useAuthStore} from '@/stores/auth'
 
 axios.defaults.withCredentials = true
 
@@ -20,10 +20,10 @@ api.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            // 인증 만료 → 로그인(역할 선택) 화면으로
             const auth = useAuthStore()
             auth.clear()
-            window.location.href = '/'
+            localStorage.removeItem('isLoggedIn')
+            window.location.href = '/login'
         }
         return Promise.reject(error)
     },

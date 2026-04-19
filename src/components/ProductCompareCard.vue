@@ -36,7 +36,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import {computed} from 'vue'
 
 const props = defineProps({
   product: {
@@ -48,11 +48,11 @@ const props = defineProps({
 const emit = defineEmits(['click'])
 
 const formattedPrice = computed(() => {
-  return props.product.price.toLocaleString()
+  return props.product.price?.toLocaleString() ?? '0'
 })
 
 const formattedReviews = computed(() => {
-  return props.product.reviews.toLocaleString()
+  return props.product.reviews?.toLocaleString() ?? '0'
 })
 
 const handleClick = () => {

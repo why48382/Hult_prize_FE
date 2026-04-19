@@ -103,7 +103,7 @@ const mapRecommendations = (res) => {
 }
 
 onMounted(() => {
-  const result = auth._recommendResult
+  const result = auth.recommendResult
   if (result) {
     products.value = mapRecommendations(result)
   }

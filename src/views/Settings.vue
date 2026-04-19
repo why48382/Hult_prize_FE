@@ -9,8 +9,10 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-4">
             <div class="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-orange-500">
-                <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/><path d="M12 18h.01"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                   stroke="currentColor" stroke-width="2" class="text-orange-500">
+                <rect width="14" height="20" x="5" y="2" rx="2" ry="2"/>
+                <path d="M12 18h.01"/>
               </svg>
             </div>
             <div>
@@ -22,27 +24,28 @@
         </div>
       </div>
 
+      <!-- 지금은 저장하는 로직이 없음 -->
       <!-- 연락자 설정 -->
-      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
-        <h3 class="font-bold text-gray-900 mb-4">연락자 설정</h3>
+      <!--      <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">-->
+      <!--        <h3 class="font-bold text-gray-900 mb-4">연락자 설정</h3>-->
 
-        <label class="text-sm text-gray-600 mb-2 block">자녀 전화번호</label>
-        <input
-            type="tel"
-            v-model="phone"
-            @input="formatPhone"
-            placeholder="010-1234-5678"
-            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"
-        />
+      <!--        <label class="text-sm text-gray-600 mb-2 block">자녀 전화번호</label>-->
+      <!--        <input-->
+      <!--            type="tel"-->
+      <!--            v-model="phone"-->
+      <!--            @input="formatPhone"-->
+      <!--            placeholder="010-1234-5678"-->
+      <!--            class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-orange-500"-->
+      <!--        />-->
 
-        <button
-            v-if="isPhoneValid"
-            @click="savePhone"
-            class="mt-3 w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600"
-        >
-          저장하기
-        </button>
-      </div>
+      <!--        <button-->
+      <!--            v-if="isPhoneValid"-->
+      <!--            @click="savePhone"-->
+      <!--            class="mt-3 w-full bg-orange-500 text-white py-3 rounded-xl font-bold hover:bg-orange-600"-->
+      <!--        >-->
+      <!--          저장하기-->
+      <!--        </button>-->
+      <!--      </div>-->
 
       <!-- 화면 설정 -->
       <div class="bg-white rounded-2xl p-5 shadow-sm border border-gray-100 mb-4">
@@ -56,7 +59,8 @@
         </div>
       </div>
 
-      <button @click="handleDisconnect" class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold text-sm hover:bg-orange-600">
+      <button @click="handleDisconnect"
+              class="w-full bg-orange-500 text-white py-4 rounded-xl font-bold text-sm hover:bg-orange-600">
         연동 해제 및 로그아웃
       </button>
     </div>
@@ -66,9 +70,9 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import {ref, computed, onMounted} from 'vue'
+import {useRouter} from 'vue-router'
+import {useAuthStore} from '@/stores/auth'
 import PageHeader from '@/components/common/PageHeader.vue'
 import BottomNav from '@/components/common/BottomNav.vue'
 
@@ -81,8 +85,8 @@ const phone = ref('')
 const formatPhone = () => {
   let digits = phone.value.replace(/\D/g, '').slice(0, 11)
   if (digits.length <= 3) phone.value = digits
-  else if (digits.length <= 7) phone.value = `${digits.slice(0,3)}-${digits.slice(3)}`
-  else phone.value = `${digits.slice(0,3)}-${digits.slice(3,7)}-${digits.slice(7)}`
+  else if (digits.length <= 7) phone.value = `${digits.slice(0, 3)}-${digits.slice(3)}`
+  else phone.value = `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`
 }
 
 const isPhoneValid = computed(() =>

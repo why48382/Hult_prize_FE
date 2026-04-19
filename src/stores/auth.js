@@ -7,8 +7,13 @@ export const useAuthStore = defineStore('auth', {
         currentVoiceId: null,      // 현재 처리 중인 voice ID (보호자용)
         currentVoiceItemId: null,  // 현재 처리 중인 voiceItem ID (쇼핑 질문용)
         recognizedText: '',        // 부모님이 말한 텍스트 (뷰 간 공유용)
+        recommendResult: JSON.parse(sessionStorage.getItem('recommendResult')) || null,
     }),
     actions: {
+        setRecommendResult(result) {
+            this.recommendResult = result
+            sessionStorage.setItem('recommendResult', JSON.stringify(result))
+        },
         setRole(role) {
             this.role = role
             localStorage.setItem('role', role)
@@ -26,6 +31,7 @@ export const useAuthStore = defineStore('auth', {
             this.currentVoiceItemId = null
             this.recognizedText = ''
             localStorage.removeItem('role')
+            sessionStorage.removeItem('recommendResult')
         }
     }
 })

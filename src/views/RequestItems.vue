@@ -14,7 +14,8 @@
         <div class="w-32 h-32 mb-6 bg-gray-100 rounded-full flex items-center justify-center">
           <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none"
                stroke="currentColor" stroke-width="2" class="text-gray-400">
-            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+            <path
+                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
             <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
             <line x1="12" y1="22.08" x2="12" y2="12"/>
           </svg>
@@ -49,71 +50,47 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useAuthStore } from '@/stores/auth'
+import {onMounted, ref} from 'vue'
 import PageHeader from '@/components/common/PageHeader.vue'
 import BottomNav from '@/components/common/BottomNav.vue'
 import RequestCard from '@/components/RequestCard.vue'
+import voiceApi from '@/api/voice/index.js'
 
-const authStore = useAuthStore()
-const role = computed(() => authStore.role)
+const requests = ref([])
+const loading = ref(false)
 
-// role에 따른 헤더 설명
-const headerDescription = computed(() => {
-  return role.value === 'guardian'
-      ? '지금까지 부모님이 요청하신 내역입니다'
-      : '자녀에게 요청한 내역입니다'
-})
-
-// 빈 화면 메시지
-const emptyMessage = computed(() => {
-  return role.value === 'guardian'
-      ? '부모님이 요청을 보내면\n여기에 표시됩니다'
-      : '음성 주문으로 요청하면\n여기에 표시됩니다'
-})
-
-// 요청 목록 (백엔드에서 가져올 데이터)
-const requests = ref([
-  {
-    id: 1,
-    name: '부모님',
-    time: '10분 전',
-    distance: '45초',
-    status: 'urgent',
-    location: '오메가3',
-    category: '의약품',
-    isPurchased: false
-  },
-  {
-    id: 2,
-    name: '부모님',
-    time: '30분 전',
-    distance: '45초',
-    status: 'pending',
-    location: '비타민 D',
-    category: '건강식품',
-    isPurchased: true
-  },
-  {
-    id: 3,
-    name: '부모님',
-    time: '1시간 전',
-    distance: '45초',
-    status: 'approved',
-    location: '감기약',
-    category: '의약품',
-    isPurchased: false
+const fetchRequests = async () => {
+  try {
+    loading.value = true
+    const data = await voiceApi.getRequests()
+    requests.value = data.map(r => ({
+      id: r.voiceId,
+      name: '부모님',
+      time: formatTime(r.createdAt),
+      status: mapStatus(r.urgencyLevel),
+      location: r.items?.map(i => i.itemName).join(', ') || r.originalText,
+      category: '',
+      isPurchased: r.status === 'COMPLETED'
+    }))
+  } catch (e) {
+    console.error('요청 내역 불러오기 실패', e)
+  } finally {
+    loading.value = false
   }
-])
-
-// 빈 상태로 테스트하려면 아래 주석 해제
-// const requests = ref([])
-
-// 요청 취소 (부모님만)
-const handleCancelRequest = (request) => {
-  console.log('요청 취소:', request)
-  // 백엔드 API 호출
-  // await api.cancelRequest(request.id)
-  // requests.value = requests.value.filter(r => r.id !== request.id)
 }
+
+const formatTime = (dateStr) => {
+  if (!dateStr) return ''
+  const diff = Math.floor((Date.now() - new Date(dateStr).getTime()) / 60000)
+  if (diff < 1) return '방금 전'
+  if (diff < 60) return `${diff}분 전`
+  return `${Math.floor(diff / 60)}시간 전`
+}
+
+const mapStatus = (urgencyLevel) => {
+  if (urgencyLevel === 'URGENT') return 'urgent'
+  return 'pending'
+}
+
+onMounted(fetchRequests)
 </script>
