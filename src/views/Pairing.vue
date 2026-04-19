@@ -2,70 +2,118 @@
 import PageHeader from "@/components/common/PageHeader.vue";
 import VerificationInput from "@/components/VerificationInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import { useAuthStore } from "@/stores/auth";
+import {useAuthStore} from "@/stores/auth";
+import pairingApi from "@/api/pairing/index.js";
+import memberApi from "@/api/member/index.js";
 
-import { ref, computed, onMounted } from "vue";
-import { useRouter, useRoute } from "vue-router";
+import {ref, computed, onMounted} from "vue";
+import {useRouter, useRoute} from "vue-router";
 
 const auth = useAuthStore();
 const router = useRouter();
 const route = useRoute();
 
 const type = computed(() => route.params.type); // guardian | parent
-const code = computed(() => (type.value === "guardian" ? "5816" : null));
-
+const issuedCode = ref(null);
 const inputCode = ref("");
+const loading = ref(false);
+const errorMsg = ref("");
 
-// 부모 입력 완료 시 값 저장
+const fetchCode = async () => {
+  try {
+    loading.value = true;
+    issuedCode.value = await pairingApi.codeIssue();
+  } catch (e) {
+    console.error("코드 발급 실패", e);
+    errorMsg.value = "코드 발급에 실패했습니다. 다시 시도해주세요.";
+  } finally {
+    loading.value = false;
+  }
+};
+
 const handleVerification = (value) => {
   inputCode.value = value;
 };
 
-// 버튼 클릭 처리
-const handleClick = () => {
-  // 보호자: 바로 다음 단계
-  if (type.value === "guardian") {
-    router.push("/pairing/loading");
-    return;
-  }
+const handleClick = async () => {
+  errorMsg.value = "";
 
-  // 부모: 코드 검증
-  if (inputCode.value === "5816") {
-    router.push("/pairing/loading");
+  if (type.value === "guardian") {
+    if (!inputCode.value || inputCode.value.length < 4) {
+      errorMsg.value = "4자리 인증번호를 입력해주세요";
+      return;
+    }
+    try {
+      loading.value = true;
+      await pairingApi.codeVerify(inputCode.value);
+      router.push("/pairing/loading");
+    } catch (e) {
+      console.error("코드 검증 실패", e);
+      errorMsg.value = "인증번호가 일치하지 않거나 만료되었습니다";
+    } finally {
+      loading.value = false;
+    }
   } else {
-    alert("인증번호가 일치하지 않습니다");
+    router.push("/pairing/loading");
   }
 };
 
-// role 저장 (백엔드 붙기 전 임시)
-onMounted(() => {
+onMounted(async () => {
   if (type.value === "guardian") {
     auth.setRole("guardian");
+    try {
+      await memberApi.setRole("CAREGIVER");
+    } catch (e) {
+      console.error("역할 설정 실패", e);
+    }
   } else {
     auth.setRole("parent");
+    try {
+      await memberApi.setRole("ELDER");
+    } catch (e) {
+      console.error("역할 설정 실패", e);
+    }
+    await fetchCode();
   }
 });
 </script>
 
 <template>
-    <PageHeader title="연동" :showBack="true" />
+  <PageHeader title="연동" :showBack="true"/>
 
   <form @submit.prevent="handleClick">
     <div class="p-4 space-y-8 max-w-md mx-auto">
-      <VerificationInput
-          :type="type"
-          :code="code"
-          @complete="handleVerification"
-      />
+
+      <!-- 부모님: 발급된 코드 표시 -->
+      <div v-if="type === 'parent'" class="text-center space-y-4">
+        <p class="text-gray-600">자녀에게 아래 코드를 알려주세요</p>
+        <div v-if="loading" class="text-gray-400 text-lg">코드 발급 중...</div>
+        <div v-else-if="issuedCode" class="text-5xl font-bold tracking-widest text-orange-500 py-6">
+          {{ issuedCode }}
+        </div>
+        <div v-else-if="errorMsg" class="text-red-500 text-sm">{{ errorMsg }}</div>
+        <p class="text-xs text-gray-400">코드는 10분간 유효합니다</p>
+      </div>
+
+      <!-- 보호자: 코드 입력 -->
+      <div v-else>
+        <VerificationInput :type="type" :code="null" @complete="handleVerification"/>
+        <p v-if="errorMsg" class="text-red-500 text-sm mt-2 text-center">{{ errorMsg }}</p>
+      </div>
+
     </div>
 
     <div class="mt-16 p-4 max-w-md mx-auto">
-      <BaseButton variant="primary" type="submit">
-        {{ type === "guardian" ? "다음으로" : "연결하기" }}
+      <BaseButton
+          variant="primary"
+          type="submit"
+          :disabled="loading || (type === 'guardian' && inputCode.length < 4)"
+      >
+        <span v-if="loading">처리 중...</span>
+        <span v-else>{{ type === "guardian" ? "연결하기" : "다음으로" }}</span>
       </BaseButton>
     </div>
   </form>
-
 </template>
 
 <style></style>

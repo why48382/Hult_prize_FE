@@ -23,6 +23,19 @@ const router = createRouter({
             component: Select
         },
         {
+            path: '/oauth2/success',
+            beforeEnter: (to, from, next) => {
+                // 쿠키에 JWT가 세팅된 상태로 진입 → role이 있으면 홈, 없으면 선택 화면
+                const auth = useAuthStore()
+                if (auth.role) {
+                    next(auth.role === 'guardian' ? '/home/guardian' : '/home/parent')
+                } else {
+                    next('/')
+                }
+            },
+            component: Select
+        },
+        {
             path: '/test',
             component: Demo
         },
@@ -99,3 +112,5 @@ const router = createRouter({
 })
 
 export default router
+// OAuth2 로그인 성공 후 BE가 리다이렉트하는 경로
+// JWT는 HttpOnly 쿠키로 자동 저장됨 → 역할 선택 화면으로 이동
