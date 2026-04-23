@@ -14,4 +14,5 @@ CMD ["nginx", "-g", "daemon off;"]
 #npm run build
 
 # 2. docker build (Dockerfile, nginx.conf, dist/ 가 같은 폴더에 있어야 함)
-#docker build -t why48382/frontend:latest .
+# docker build -t why48382/onsoom-fe:latest .
+# docker push why48382/onsoom-fe:latest

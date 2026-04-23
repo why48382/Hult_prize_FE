@@ -1,13 +1,21 @@
 {
-  "appId": "com.onsoom.app",
-  "appName": "onsoom",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "dist",
-  "plugins": {
-    "SplashScreen": {
-      "launchShowDuration": 0
-    }
-  },
-  "cordova": {}
+    "appId": "com.onsoom.app",
+    "appName": "onsoom",
+    "bundledWebRuntime": false,
+    "npmClient": "npm",
+    "webDir": "dist",
+    "server": {
+       "url": "https://onsum.store",
+       "cleartext": false
+    },
+    "android": {
+       "allowMixedContent": true,
+       "webContentsDebuggingEnabled": true
+    },
+    "plugins": {
+       "SplashScreen": {
+          "launchShowDuration": 0
+       }
+    },
+    "cordova": {}
 }
