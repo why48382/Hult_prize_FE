@@ -121,7 +121,8 @@ const normalBtn = 'flex-1 py-3 bg-gray-100 text-gray-700 rounded-xl font-medium 
 const handleDisconnect = () => {
   if (confirm('정말 연동을 해제하시겠습니까?')) {
     authStore.clear()
-    router.push('/')
+    localStorage.removeItem('isLoggedIn')
+    router.push('/login')
   }
 }
 </script>
