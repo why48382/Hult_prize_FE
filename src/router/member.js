@@ -8,8 +8,8 @@ export default [
         path: '/oauth2/success',
         beforeEnter: (to, from, next) => {
             localStorage.setItem('isLoggedIn', 'true')
-            const agreed = localStorage.getItem('termsAgreed')
-            if (!agreed) next('/terms')
+            const isNew = new URLSearchParams(window.location.search).get('isNew')
+            if (isNew === 'true') next('/terms')
             else next('/')
         },
         component: Login

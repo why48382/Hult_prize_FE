@@ -9,4 +9,8 @@ const getMe = async () => {
     return res.data
 }
 
-export default {setRole, getMe}
+const signup = async (body) => {
+    await api.post('/api/member/signup', body)
+}
+
+export default {setRole, getMe, signup}
