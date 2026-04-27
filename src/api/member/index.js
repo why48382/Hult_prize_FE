@@ -4,4 +4,9 @@ const setRole = async (role) => {
     await api.get('/api/member/role', {params: {role}})
 }
 
-export default {setRole}
+const getMe = async () => {
+    const res = await api.get('/api/member/me')
+    return res.data
+}
+
+export default {setRole, getMe}

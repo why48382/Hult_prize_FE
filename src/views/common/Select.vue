@@ -1,29 +1,23 @@
 <script setup>
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
-import {useAuthStore} from '@/stores/auth.js'
 import SafetyOption from '@/components/SafetyOption.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import memberApi from '@/api/member/index.js'
-
-const auth = useAuthStore()
 
 const router = useRouter()
 const selectedRole = ref(null)
 
 const handleNext = async () => {
   if (selectedRole.value === 'guardian') {
-    auth.setRole('guardian')
     await memberApi.setRole('CAREGIVER')
     router.push('/pairing/guardian')
   }
   if (selectedRole.value === 'parent') {
-    auth.setRole('parent')
     await memberApi.setRole('ELDER')
     router.push('/pairing/parent')
   }
 }
-
 </script>
 
 <template>
