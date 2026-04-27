@@ -23,6 +23,7 @@ api.interceptors.response.use(
             const auth = useAuthStore()
             auth.clear()
             localStorage.removeItem('isLoggedIn')
+            alert('로그인 시간이 만료되었습니다.');
             window.location.href = '/login'
         }
         return Promise.reject(error)
