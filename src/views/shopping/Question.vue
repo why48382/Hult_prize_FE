@@ -66,7 +66,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
+import { useAuthStore } from '@/stores/auth.js'
 import PageHeader from '@/components/common/PageHeader.vue'
 import QuestionOption from '@/components/QuestionOption.vue'
 import shoppingApi from '@/api/shopping/index.js'

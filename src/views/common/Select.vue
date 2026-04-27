@@ -1,7 +1,7 @@
 <script setup>
 import {ref} from 'vue'
 import {useRouter} from 'vue-router'
-import {useAuthStore} from '@/stores/auth'
+import {useAuthStore} from '@/stores/auth.js'
 import SafetyOption from '@/components/SafetyOption.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import memberApi from '@/api/member/index.js'
@@ -31,7 +31,7 @@ const handleNext = async () => {
     <!-- 이미지 영역 -->
     <div class="w-full max-w-52 sm:max-w-60 md:max-w-72 mb-5">
       <img
-          src="@/images/select_page.webp"
+          src="../../images/select_page.webp"
           width="288"
           height="180"
           alt="부모님과 쇼핑"

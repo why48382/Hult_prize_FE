@@ -2,7 +2,7 @@
 import PageHeader from "@/components/common/PageHeader.vue";
 import VerificationInput from "@/components/VerificationInput.vue";
 import BaseButton from "@/components/BaseButton.vue";
-import {useAuthStore} from "@/stores/auth";
+import {useAuthStore} from "@/stores/auth.js";
 import pairingApi from "@/api/pairing/index.js";
 
 import {computed, onMounted, ref} from "vue";
