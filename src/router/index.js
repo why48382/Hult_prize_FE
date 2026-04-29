@@ -5,10 +5,9 @@ import voiceRoutes from './voice.js'
 import shoppingRoutes from './shopping.js'
 import memberApi from '@/api/member/index.js'
 import {useAuthStore} from '@/stores/auth'
-
-import Select from '@/views/common/Select.vue'
 import Settings from '@/views/common/Settings.vue'
 import Demo from '@/views/common/Demo.vue'
+import Redirect from '@/views/common/Redirect.vue'
 
 const PUBLIC_PATHS = ['/login', '/terms', '/oauth2/success']
 
@@ -23,7 +22,7 @@ const router = createRouter({
         // ── common ──────────────────────────────
         {
             path: '/',
-            component: Select,
+            component: Redirect,
             beforeEnter: async (to, from, next) => {
                 try {
                     const me = await memberApi.getMe()
@@ -34,8 +33,13 @@ const router = createRouter({
                     } else {
                         next()
                     }
-                } catch {
-                    next()
+                } catch (e) {
+                    if (e.response?.status === 401) {
+                        localStorage.removeItem('isLoggedIn')
+                        next('/login')
+                    } else {
+                        next()
+                    }
                 }
             }
         },

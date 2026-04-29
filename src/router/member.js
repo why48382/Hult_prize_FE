@@ -6,11 +6,15 @@ export default [
     {path: '/terms', component: Terms},
     {
         path: '/oauth2/success',
-        beforeEnter: (to, from, next) => {
+        beforeEnter: async (to, from, next) => {
             localStorage.setItem('isLoggedIn', 'true')
             const isNew = new URLSearchParams(window.location.search).get('isNew')
-            if (isNew === 'true') next('/terms')
-            else next('/')
+            if (isNew === 'true') {
+                next('/terms')
+            } else {
+                await new Promise(resolve => setTimeout(resolve, 500))
+                window.location.href = '/'
+            }
         },
         component: Login
     },
