@@ -13,4 +13,8 @@ const signup = async (body) => {
     await api.post('/api/member/signup', body)
 }
 
-export default {setRole, getMe, signup}
+const logout = async () => {
+    await api.post('/api/member/logout')
+}
+
+export default {setRole, getMe, signup, logout}

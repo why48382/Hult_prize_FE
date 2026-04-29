@@ -6,6 +6,7 @@
       <VoiceButton
           :is-listening="isListening"
           :recognized-text="recognizedText"
+          :loading="uploading"
           @click="toggleListening"
           @reset="handleReset"
           @next="handleNext"
@@ -13,12 +14,6 @@
 
       <!-- 에러 메시지 -->
       <p v-if="errorMsg" class="mt-4 text-center text-red-500 text-sm">{{ errorMsg }}</p>
-
-      <!-- 업로드 중 -->
-      <div v-if="uploading" class="mt-4 flex items-center justify-center gap-2 text-orange-500">
-        <div class="w-4 h-4 border-2 border-orange-500 border-t-transparent rounded-full animate-spin"></div>
-        <span class="text-sm">요청을 전송하는 중...</span>
-      </div>
     </div>
 
     <BottomNav/>
@@ -26,9 +21,9 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth.js'
+import {ref} from 'vue'
+import {useRouter} from 'vue-router'
+import {useAuthStore} from '@/stores/auth.js'
 import PageHeader from '@/components/common/PageHeader.vue'
 import BottomNav from '@/components/common/BottomNav.vue'
 import VoiceButton from '@/components/VoiceButton.vue'
@@ -39,17 +34,16 @@ const auth = useAuthStore()
 
 const isListening = ref(false)
 const recognizedText = ref('')
-const audioBlob = ref(null)   // 녹음된 오디오 Blob
+const audioBlob = ref(null)
 const uploading = ref(false)
 const errorMsg = ref('')
 
 let mediaRecorder = null
 let audioChunks = []
 
-// 브라우저 음성 녹음 (Web Speech API로 텍스트, MediaRecorder로 파일)
 const startRecording = async () => {
   try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true})
     mediaRecorder = new MediaRecorder(stream)
     audioChunks = []
 
@@ -58,8 +52,7 @@ const startRecording = async () => {
     }
 
     mediaRecorder.onstop = () => {
-      audioBlob.value = new Blob(audioChunks, { type: 'audio/webm' })
-      // 스트림 트랙 정지
+      audioBlob.value = new Blob(audioChunks, {type: 'audio/webm'})
       stream.getTracks().forEach(t => t.stop())
     }
 
@@ -75,7 +68,7 @@ const stopRecording = () => {
   return new Promise((resolve) => {
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
       mediaRecorder.onstop = () => {
-        audioBlob.value = new Blob(audioChunks, { type: 'audio/webm' })
+        audioBlob.value = new Blob(audioChunks, {type: 'audio/webm'})
         mediaRecorder.stream?.getTracks().forEach(t => t.stop())
         resolve()
       }
@@ -94,20 +87,13 @@ const toggleListening = async () => {
     audioBlob.value = null
     await startRecording()
   } else {
-    await stopRecording()  // onstop 완료까지 기다림
+    await stopRecording()
     isListening.value = false
-    recognizedText.value = '(녹음 완료 - 자녀에게 전달됩니다)'
+    await uploadAndProcess()
   }
 }
 
-const handleReset = () => {
-  recognizedText.value = ''
-  isListening.value = false
-  audioBlob.value = null
-  errorMsg.value = ''
-}
-
-const handleNext = async () => {
+const uploadAndProcess = async () => {
   if (!audioBlob.value) {
     errorMsg.value = '음성을 먼저 녹음해주세요.'
     return
@@ -115,15 +101,32 @@ const handleNext = async () => {
 
   try {
     uploading.value = true
-    const file = new File([audioBlob.value], 'voice.webm', { type: 'audio/webm' })
-    await voiceApi.upload(file)
-    auth.setRecognizedText(recognizedText.value)
-    router.push('/parent/loading')
+    recognizedText.value = '요청을 처리하는 중...'
+    const file = new File([audioBlob.value], 'voice.webm', {type: 'audio/webm'})
+    const result = await voiceApi.upload(file)
+    if (!result.originalText) {
+      errorMsg.value = '음성을 인식하지 못했습니다. 다시 시도해주세요.'
+      recognizedText.value = ''
+      return
+    }
+    recognizedText.value = result.originalText
   } catch (e) {
     console.error('음성 업로드 실패', e)
     errorMsg.value = '요청 전송에 실패했습니다. 다시 시도해주세요.'
+    recognizedText.value = ''
   } finally {
     uploading.value = false
   }
+}
+
+const handleNext = () => {
+  router.replace('/parent/complete')
+}
+
+const handleReset = () => {
+  recognizedText.value = ''
+  isListening.value = false
+  audioBlob.value = null
+  errorMsg.value = ''
 }
 </script>

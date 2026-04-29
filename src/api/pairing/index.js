@@ -9,4 +9,8 @@ const codeVerify = async (code) => {
     await api.get('/api/pairing/codeverify', {params: {code}})
 }
 
-export default {codeIssue, codeVerify}
+const unpair = async () => {
+    await api.delete('/api/pairing/unpair')
+}
+
+export default {codeIssue, codeVerify, unpair}

@@ -47,7 +47,8 @@
     >
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center gap-2" :class="recognizedText ? 'text-green-600' : 'text-gray-400'">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <polyline points="20 6 9 17 4 12"/>
           </svg>
           <span class="font-medium">인식된 내용</span>
@@ -57,7 +58,8 @@
             @click.stop="handleReset"
             class="text-gray-400 hover:text-gray-600 transition-colors"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
           </svg>
         </button>
@@ -70,29 +72,28 @@
     <!-- 다음 단계로 버튼 -->
     <button
         @click="handleNext"
-        :disabled="!recognizedText"
+        :disabled="!recognizedText || loading"
         :class="[
-        'w-full mt-6 py-4 rounded-xl font-medium transition-colors',
-        recognizedText
+          'w-full mt-6 py-4 rounded-xl font-medium transition-colors',
+          recognizedText && !loading
           ? 'bg-orange-500 text-white hover:bg-orange-600'
           : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-      ]"
+        ]"
     >
-      다음 단계로
+      <span v-if="loading" class="flex items-center justify-center gap-2">
+      <div class="w-4 h-4 border-2 border-gray-400 border-t-transparent rounded-full animate-spin"></div>
+        처리 중...
+      </span>
+      <span v-else>다음 단계로</span>
     </button>
   </div>
 </template>
 
 <script setup>
 const props = defineProps({
-  isListening: {
-    type: Boolean,
-    default: false
-  },
-  recognizedText: {
-    type: String,
-    default: ''
-  }
+  isListening: { type: Boolean, default: false },
+  recognizedText: { type: String, default: '' },
+  loading: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['click', 'reset', 'next'])
