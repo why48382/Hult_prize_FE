@@ -92,5 +92,16 @@ const mapStatus = (urgencyLevel) => {
   return 'pending'
 }
 
+const handleCancelRequest = async (request) => {
+  if (!confirm('요청이 취소됩니다. 진행하시겠습니까?')) return
+  try {
+    await voiceApi.deleteRequest(request.id)
+    requests.value = requests.value.filter(r => r.id !== request.id)
+  } catch (e) {
+    console.error('요청 취소 실패', e)
+    alert('요청 취소에 실패했습니다. 다시 시도해주세요.')
+  }
+}
+
 onMounted(fetchRequests)
 </script>

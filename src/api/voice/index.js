@@ -21,4 +21,9 @@ const updateStatus = async (voiceId, status) => {
     return res.data
 }
 
-export default { upload, getRequests, updateStatus }
+const deleteRequest = async (voiceId) => {
+    await api.delete(`/api/voice/${voiceId}`)
+}
+
+
+export default { upload, getRequests, updateStatus, deleteRequest }
